@@ -1,0 +1,38 @@
+.image {
+  height: auto;
+  border-radius: 50%;
+  margin-top: 32px;
+  margin-inline: auto;
+}
+
+.contents {
+  margin-top: 32px;
+  margin-inline: auto;
+  width: max-content;
+}
+
+.box {
+  display: flex;
+  gap: 16px;
+}
+
+.box:not(:first-child) {
+  margin-top: 8px;
+}
+
+.title {
+  font-weight: 600;
+  width: 120px;
+}
+
+.olist {
+  padding-left: 16px;
+}
+
+.ulist {
+  padding-left: 12px;
+}
+
+.olist li, .ulist li {
+  margin-top: 4px;
+}
