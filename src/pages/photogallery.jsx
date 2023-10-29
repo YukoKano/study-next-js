@@ -1,9 +1,9 @@
 import { Photos } from "@/components/Photos/Photos";
 
-const photogallery = () => {
+const Photogallery = () => {
   return (
     <Photos />
   )
 }
 
-export default photogallery;
+export default Photogallery;

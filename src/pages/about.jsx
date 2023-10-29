@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from '@/styles/About.module.css'
 
-const about = () => {
+const About = () => {
   return (
     <>
       <h2>私について</h2>
@@ -60,4 +60,4 @@ const about = () => {
   )
 }
 
-export default about;
+export default About;
