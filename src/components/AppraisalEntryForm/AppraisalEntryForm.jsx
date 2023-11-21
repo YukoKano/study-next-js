@@ -1,50 +1,110 @@
+const menu = [
+  {
+    value: 'curyy',
+    name: 'カレー'
+  },
+  {
+    value: 'stew',
+    name: 'シチュー'
+  }
+]
+const ingredients = [
+  {
+    makerName: 'curry', // まだ使ってない
+    value: 'onion',
+    name: '玉ねぎ'
+  },
+  {
+    makerName: 'curry',
+    value: 'carrot',
+    name: 'にんじん'
+  }
+]
+
+const years = [
+  {
+    value: '2022',
+    name: '2022'
+  },
+  {
+    value: '2023',
+    name: '2023'
+  },
+]
+
+const elapsedTimes = [
+  {
+    value: '5',
+    name: '5分'
+  },
+  {
+    value: '10',
+    name: '10分'
+  },
+  {
+    value: '15',
+    name: '15分'
+  },
+]
+
+const Label = ({ name, id }) => {
+  return (
+    <dt>
+      <label htmlFor={id}>{ name }</label>
+    </dt>
+  )
+}
+
+const SelectBox = ({ id }) => {
+  let options = []
+
+  if (id === "menu") {
+    options = menu.map((item) => <option key={item.value} value={item.value}>{ item.name }</option>)
+  } else if (id === "ingredients") {
+    options = ingredients.map((ingredient) => <option key={ingredient.value} value={ingredient.value}>{ ingredient.name }</option>)
+  } else if (id === "year") {
+    options = years.map((year) => <option key={year.value} value={year.value}>{ year.name }</option>)
+  } else if (id === "elapsedTimes") {
+    options = elapsedTimes.map((time) => <option key={time.value} value={time.value}>{ time.name }</option>)
+  }
+
+  return (
+    <dd>
+      <select name={ id } id={ id } required>
+        <option value=''>選択してください</option>
+        { options }
+      </select>
+    </dd>
+  )
+}
+
+const LabelAndSelectBox = ({ name, id }) => {
+  return (
+    <>
+      <Label name={name} id={ id } />
+      <SelectBox id={ id } />
+    </>
+  )
+}
+
+const SelectBoxes = ({ children }) => {
+  return (
+    <dl>
+      { children }
+    </dl>
+  )
+}
+
 export const AppraisalEntryForm = () => {
   return (
     <form>
-      <dl>
-        <dt>
-          <label htmlFor="maker">メーカー名</label>
-        </dt>
-        <dd>
-          <select name="maker" id="maker" required>
-            <option value=''>選択してください</option>
-            <option value='toyota'>トヨタ</option>
-            <option value='nissan'>日産</option>
-          </select>
-        </dd>
-        <dt>
-          <label htmlFor="car">車種名</label>
-        </dt>
-        <dd>
-          <select name="car" id="car" required>
-            <option value=''>選択してください</option>
-            <option value='toyota'>プリウス</option>
-            <option value='nissan'>ハリアー</option>
-          </select>
-        </dd>
-        <dt>
-          <label htmlFor="year">年式</label>
-        </dt>
-        <dd>
-          <select name="year" id="year" required>
-            <option value=''>選択してください</option>
-            <option value='2023'>2023年</option>
-            <option value='2022'>2022年</option>
-          </select>
-        </dd>
-        <dt>
-          <label htmlFor="mileage">走行距離</label>
-        </dt>
-        <dd>
-          <select name="mileage" id="mileage" required>
-            <option value=''>選択してください</option>
-            <option value='under5'>5万km未満</option>
-            <option value='5'>5万km以上</option>
-            <option value='10'>10万km以上</option>
-          </select>
-        </dd>
-        <button>次へ</button>
-      </dl>
+      <SelectBoxes>
+        <LabelAndSelectBox name="メニュー名" id="menu" />
+        <LabelAndSelectBox name="材料" id="ingredients" />
+        <LabelAndSelectBox name="年式" id="year" />
+        <LabelAndSelectBox name="経過時間" id="elapsedTimes" />
+      </SelectBoxes>
+      <button>次へ</button>
     </form>
   )
 }
