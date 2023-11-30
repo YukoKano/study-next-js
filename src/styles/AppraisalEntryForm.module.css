@@ -1,0 +1,71 @@
+.background {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: darkgrey;
+  opacity: 0.5;
+  width: 100vw;
+  height: 100vh;
+}
+
+.selectbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 4px 8px;
+  max-width: 200px;
+  border: 1px solid #646464;
+  border-radius: 4px;
+}
+
+.selectbox::after {
+  display: inline-block;
+  content: '';
+  margin-left: 8px;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  border-top: 2px solid #646464;
+  border-right: 2px solid #646464;
+}
+
+.displayNone {
+  display: none;
+}
+
+.displayBlock {
+  display: block;
+}
+
+.modal {
+  position: absolute;
+  z-index: 1;
+  width: 80vw;
+  padding: 24px;
+  border-radius: 4px;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.modal p {
+  font-size: small;
+}
+
+.modal button {
+  margin-top: 8px;
+  margin-right: 16px;
+  border: none;
+  background-color: white;
+}
+
+.nextButton {
+  margin-top: 32px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color:cadetblue
+}

@@ -1,3 +1,6 @@
+import styles from '@/styles/AppraisalEntryForm.module.css'
+import { useState } from 'react'
+
 const menu = [
   {
     value: 'curyy',
@@ -47,64 +50,39 @@ const elapsedTimes = [
   },
 ]
 
-const Label = ({ name, id }) => {
-  return (
-    <dt>
-      <label htmlFor={id}>{ name }</label>
-    </dt>
-  )
-}
+export const AppraisalEntryForm = () => {
+  const [displayModal, setDisplayModal] = useState(false);
+  const [menuItem, setMenuItem] = useState('選択してください');
+  const displayClassName = displayModal ? styles.displayBlock : styles.displayNone;
 
-const SelectBox = ({ id }) => {
-  let options = []
 
-  if (id === "menu") {
-    options = menu.map((item) => <option key={item.value} value={item.value}>{ item.name }</option>)
-  } else if (id === "ingredients") {
-    options = ingredients.map((ingredient) => <option key={ingredient.value} value={ingredient.value}>{ ingredient.name }</option>)
-  } else if (id === "year") {
-    options = years.map((year) => <option key={year.value} value={year.value}>{ year.name }</option>)
-  } else if (id === "elapsedTimes") {
-    options = elapsedTimes.map((time) => <option key={time.value} value={time.value}>{ time.name }</option>)
+  const handleOnClick = () => {
+    console.log('clicked');
+    setDisplayModal(!displayModal);
+  }
+
+  const handleListOnClick = (e) => {
+    e.preventDefault()
+    setMenuItem(e.currentTarget.value)
+    setDisplayModal(!displayModal);
   }
 
   return (
-    <dd>
-      <select name={ id } id={ id } required>
-        <option value=''>選択してください</option>
-        { options }
-      </select>
-    </dd>
-  )
-}
-
-const LabelAndSelectBox = ({ name, id }) => {
-  return (
-    <>
-      <Label name={name} id={ id } />
-      <SelectBox id={ id } />
-    </>
-  )
-}
-
-const SelectBoxes = ({ children }) => {
-  return (
-    <dl>
-      { children }
-    </dl>
-  )
-}
-
-export const AppraisalEntryForm = () => {
-  return (
     <form>
-      <SelectBoxes>
-        <LabelAndSelectBox name="メニュー名" id="menu" />
-        <LabelAndSelectBox name="材料" id="ingredients" />
-        <LabelAndSelectBox name="年式" id="year" />
-        <LabelAndSelectBox name="経過時間" id="elapsedTimes" />
-      </SelectBoxes>
-      <button>次へ</button>
+      <label>メニュー名</label>
+      <p className={styles.selectbox} onClick={handleOnClick}>{ menuItem }</p>
+
+      <div className={`${displayClassName} ${styles.modal}`}>
+        <p>メニューを選んでね</p>
+        <div>
+          <button onClick={handleListOnClick} value='カレー'>カレー</button>
+          <button onClick={handleListOnClick} value='シチュー'>シチュー</button>
+          <button onClick={handleListOnClick} value='グラタン'>グラタン</button>
+        </div>
+      </div>
+      <div className={`${styles.background} ${displayClassName}`} onClick={handleOnClick}></div>
+
+      <button className={styles.nextButton} onClick={(e) => { e.preventDefault() }}>次へ</button>
     </form>
   )
 }
