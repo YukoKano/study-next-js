@@ -9,13 +9,19 @@
   height: 100vh;
 }
 
+.label {
+  display: block;
+  margin-top: 16px;
+}
+
 .selectbox {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
   padding: 4px 8px;
-  max-width: 200px;
+  max-width: 400px;
   border: 1px solid #646464;
   border-radius: 4px;
 }
@@ -56,10 +62,21 @@
 }
 
 .modal button {
-  margin-top: 8px;
-  margin-right: 16px;
+  padding: 4px 8px;
+  width: 100%;
+  text-align: left;
   border: none;
   background-color: white;
+}
+
+.ul {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.list {
+  margin-top: 8px;
+  margin-left: 16px;
 }
 
 .nextButton {
