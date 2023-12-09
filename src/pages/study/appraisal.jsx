@@ -3,7 +3,7 @@ import { AppraisalEntryForm } from "@/components/AppraisalEntryForm/AppraisalEnt
 const Appraisal = () => {
   return (
     <>
-      <h2>EF作ってみる</h2>
+      <h2>メニュー</h2>
       <AppraisalEntryForm />
     </>
   )
