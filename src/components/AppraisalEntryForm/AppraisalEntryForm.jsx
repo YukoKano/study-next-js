@@ -1,6 +1,28 @@
 import styles from '@/styles/AppraisalEntryForm.module.css'
 import { useState } from 'react'
 
+ const appetizerItems = [{ label: "前菜" }, { label: "スープ" }, { label: "肉料理" }, { label: "デザート" }];
+
+const AppetizerSelectBox = ({ value, handleClick, modal, toggleDisplayModal}) => {
+  return (
+    <>
+      <label className={styles.label}>{appetizerItems[0].label}</label>
+      <p className={styles.selectbox} onClick={() => toggleDisplayModal("appetizer")}>{value}</p>
+      {modal && (
+        <div className={`${styles.modal}`}>
+          <p>{appetizerItems[0].label}を選んでね</p>
+          <ul className={styles.ul}>
+            <li className={styles.list}><button onClick={handleClick} value='salmonCarappcio'>サーモンのカルパッチョ</button></li>
+            <li className={styles.list}><button onClick={handleClick} value='mustardMarinatedMushrooms'>きのこのマスタードマリネ</button></li>
+            <li className={styles.list}><button onClick={handleClick} value='cheeseAndAvocadoPinchos'>チーズとアボカドのピンチョス</button></li>
+          </ul>
+          <button onClick={() => toggleDisplayModal("appetizer")}>戻る</button>
+        </div>
+      )}
+    </>
+  )
+}
+
 export const AppraisalEntryForm = () => {
   const [displayBackground, setDisplayBackground] = useState(false);
 
@@ -14,13 +36,10 @@ export const AppraisalEntryForm = () => {
   const [meatDish, setMeatDish] = useState('選択してください');
   const [dessert, setDessert] = useState('選択してください');
 
-  const displayClassName = displayBackground ? styles.displayBlock : styles.displayNone;
-
   const toggleDisplayModal = (value) => { //handleHogeとかの方がいいけど一旦
-    // console.log(appetizerModal, soupModal, meatDishModal, dessertModal);
 
     setDisplayBackground(!displayBackground);
-    // event.preventDefault();
+
     if (value === "appetizer") {
       setAppetizerModal(!appetizerModal);
     } else if (value === "soup") {
@@ -36,28 +55,32 @@ export const AppraisalEntryForm = () => {
     e.preventDefault()
     setAppetizer(e.currentTarget.innerText)
     toggleDisplayModal("appetizer");
-    setDisplayBackground(!displayBackground);
   }
 
   const handleSoup = (e) => {
     e.preventDefault()
-    setSoup(e.currentTarget.innerText)
+    setSoup(e.currentTarget.innerText);
     toggleDisplayModal("soup");
-    setDisplayBackground(!displayBackground);
   }
 
   const handleMeatDish = (e) => {
     e.preventDefault()
     setMeatDish(e.currentTarget.innerText)
     toggleDisplayModal("meatDish");
-    setDisplayBackground(!displayBackground);
   }
 
   const handleDessert = (e) => {
     e.preventDefault()
     setDessert(e.currentTarget.innerText)
     toggleDisplayModal("dessert");
-    setDisplayBackground(!displayBackground);
+  }
+
+  const handleBackground = () => {
+    setDisplayBackground(false);
+    setAppetizerModal(false);
+    setSoupModal(false);
+    setMeatDishModal(false);
+    setDessertModal(false);
   }
 
   const nextButtonClick = (e) => {
@@ -73,19 +96,7 @@ export const AppraisalEntryForm = () => {
 
   return (
     <form>
-      <label className={styles.label}>前菜</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal("appetizer")}>{appetizer}</p>
-      {appetizerModal && (
-        <div className={`${styles.modal}`}>
-          <p>前菜を選んでね</p>
-          <ul className={styles.ul}>
-            <li className={styles.list}><button onClick={handleAppetizer} value='salmonCarappcio'>サーモンのカルパッチョ</button></li>
-            <li className={styles.list}><button onClick={handleAppetizer} value='mustardMarinatedMushrooms'>きのこのマスタードマリネ</button></li>
-            <li className={styles.list}><button onClick={handleAppetizer} value='cheeseAndAvocadoPinchos'>チーズとアボカドのピンチョス</button></li>
-          </ul>
-          <button onClick={() => toggleDisplayModal("appetizer")}>戻る</button>
-        </div>
-      )}
+      <AppetizerSelectBox value={appetizer} handleClick={handleAppetizer} modal={appetizerModal} toggleDisplayModal={toggleDisplayModal} />
 
       <label className={styles.label}>スープ</label>
       <p className={styles.selectbox} onClick={() => toggleDisplayModal("soup")}>{soup}</p>
@@ -130,7 +141,7 @@ export const AppraisalEntryForm = () => {
       )}
 
       {displayBackground && (
-        <div className={`${styles.background}`} onClick={() => setDisplayBackground(false)}></div>
+        <div className={`${styles.background}`} onClick={handleBackground}></div>
       )}
 
       <button className={styles.nextButton} onClick={nextButtonClick}>次へ</button>
