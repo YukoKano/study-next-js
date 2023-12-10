@@ -57,57 +57,53 @@ const NextButton = ({ menu, setSelectedMenu }) => {
   )
 }
 
-
-
+const initialMenuState = {
+    modals : {
+      appetizer: false,
+      soup: false,
+      meatDish: false,
+      dessert: false
+    },
+    texts : {
+      appetizer: '選択してください',
+      soup: '選択してください',
+      meatDish: '選択してください',
+      dessert: '選択してください'
+    }
+}
 
 export const AppraisalEntryForm = () => {
   const [displayBackground, setDisplayBackground] = useState(false);
-
-  const initialModals = {
-    appetizer: false,
-    soup: false,
-    meatDish: false,
-    dessert: false
-  }
-  const [modals, setModals] = useState(initialModals);
-
-  const initialMenu = {
-    appetizer: '選択してください',
-    soup: '選択してください',
-    meatDish: '選択してください',
-    dessert: '選択してください'
-  }
-  const [menu, setMenu] = useState(initialMenu);
-
+  const [menuState, setMenuState] = useState(initialMenuState)
   const [selectedMenu, setSelectedMenu] = useState(false);
 
   const toggleDisplayModal = (value) => {
     setDisplayBackground(!displayBackground);
-    setModals(prevModals => ({ ...prevModals, [value]: !prevModals[value] })); //ここわからん
+    setMenuState(prevMenuState => ({ ...prevMenuState, modals: {...prevMenuState.modals, [value]: !prevMenuState.modals[value] }}));
   }
 
   const handleMenu = (type, e) => {
     e.preventDefault();
     const text = e.currentTarget.innerText;
 
-    setMenu(prevMenu => ({ ...prevMenu, [type]: text  }));
+    setMenuState(prevMenuState => ({ ...prevMenuState, texts: { ...prevMenuState.texts, [type]: text } }));
     setDisplayBackground(!displayBackground);
-    setModals(prevModals => ({ ...prevModals, [type]: false }));
+    setMenuState(prevMenuState => ({ ...prevMenuState, modals: {...prevMenuState.modals, [type]: !prevMenuState.modals[type] }}));
   }
 
   const handleBackground = () => {
     setDisplayBackground(false);
-    setModals(initialModals);
+    setMenuState(prevMenuState => ({ ...prevMenuState, modals: initialMenuState.modals}));
   }
 
   return (
     <>
       <form>
-        <SelectBox type="appetizer" text={menu.appetizer} valueModal={modals.appetizer} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="soup" text={menu.soup} valueModal={modals.soup} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="meatDish" text={menu.meatDish} valueModal={modals.meatDish} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="dessert" text={menu.dessert} valueModal={modals.dessert} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <NextButton menu={menu} setSelectedMenu={setSelectedMenu} />
+        <SelectBox type="appetizer" text={menuState.texts.appetizer} valueModal={menuState.modals.appetizer} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="soup" text={menuState.texts.soup} valueModal={menuState.modals.soup} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="meatDish" text={menuState.texts.meatDish} valueModal={menuState.modals.meatDish} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="dessert" text={menuState.texts.dessert} valueModal={menuState.modals.dessert} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <NextButton menu={menuState.texts} setSelectedMenu={setSelectedMenu} />
       </form>
 
       {displayBackground && (
@@ -115,7 +111,7 @@ export const AppraisalEntryForm = () => {
       )}
 
       {selectedMenu && (
-        <SelectedMenu menu={menu} />
+        <SelectedMenu menu={menuState.texts} />
       )}
    </>
   )
