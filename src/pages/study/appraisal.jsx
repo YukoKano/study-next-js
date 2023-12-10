@@ -4,7 +4,7 @@ const Appraisal = () => {
   return (
     <>
       <h2>EF作ってみる</h2>
-      <AppraisalEntryForm />
+      {/* <AppraisalEntryForm /> */}
     </>
   )
 }
