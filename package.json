@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "n": "^9.2.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
