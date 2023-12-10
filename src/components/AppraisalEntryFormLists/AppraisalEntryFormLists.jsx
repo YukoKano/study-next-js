@@ -1,9 +1,8 @@
 import styles from '@/styles/AppraisalEntryForm.module.css'
-import { COURSES } from '@/constants/COURSES';
-import { List } from '../AppraisalEntryFormList/AppraisalEntryFormList';
+import { findCategory } from '@/utils/findCourses';
 
 export const Lists = ({ handleClick, category }) => {
-  const menu = COURSES.find((val) => val.course === category);
+  const menu = findCategory(category);
 
   if (!menu || !menu.items) {
     console.error(`Category ${category} not found or has no items.`);
@@ -13,12 +12,9 @@ export const Lists = ({ handleClick, category }) => {
   return (
     <ul className={styles.ul}>
       {menu.items.map((item) => (
-        <List
-          key={item.value}
-          value={item.value}
-          text={item.name}
-          handleClick={handleClick}
-        />
+        <li key={item.value} className={styles.list}>
+          <button onClick={handleClick} value={item.value}>{item.name}</button>
+        </li>
       ))}
     </ul>
   )

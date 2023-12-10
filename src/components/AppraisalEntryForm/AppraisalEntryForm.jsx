@@ -1,11 +1,11 @@
 import styles from '@/styles/AppraisalEntryForm.module.css'
 import { useState } from 'react'
 import { COURSES } from '@/constants/COURSES';
-import { Lists } from '../AppraisalEntryFormLists/AppraisalEntryFormLists';
 import { SelectedMenu } from '../AppraisalEntryFormSelectedMenu/AppraisalEntryFormSelectedMenu';
+import { SelectBox } from '../AppraisalEntryFormSelectBox/AppraisalEntryFormSelectBox';
+import { NextButton } from '../AppraisalEntryFormNextButton/AppraisalEntryFormNextButton';
 
 const courseCategories = COURSES.map((val) => val.course);
-const findCategory = (category) => COURSES.find((val) => val.course === category);
 
 const initialMenuState = {
   modals : {
@@ -22,67 +22,13 @@ const initialMenuState = {
   }
 }
 
-const Label = ({ text, toggleModal, category}) => {
-  const menu = findCategory(category);
-
-  return (
-    <>
-      <label className={styles.label}>{menu.label}</label>
-      <p className={styles.selectbox} onClick={() => toggleModal(menu.course)}>{text}</p>
-    </>
-  )
-}
-
-const Modal = ({ isModal, handleClick, toggleModal, category }) => {
-  const menu = findCategory(category);
-
-  return (
-    isModal && (
-      <div className={`${styles.modal}`}>
-        <p>{menu.label}を選んでね</p>
-        <Lists handleClick={handleClick} category={category} />
-        <button onClick={() => toggleModal(category)}>戻る</button>
-      </div>
-    )
-  )
-}
-
-const SelectBox = ({ text, isModal, category, toggleModal, changeMenu }) => {
-  return (
-    <>
-      <Label text={text} toggleModal={() => toggleModal(category)} category={category} />
-      <Modal isModal={isModal} handleClick={(e) => changeMenu(category, e)} toggleModal={() => toggleModal(category)} category={category} />
-    </>
-  )
-}
-
-
-const NextButton = ({ menu, setDisplaySelectedMenu }) => {
-  const notEntered = Object.values(menu).some(val => val === '選択してください'); // ここ分かってない
-
-  const nextButtonClick = (e) => {
-    e.preventDefault();
-    if (notEntered) {
-      console.log("NG");
-    } else {
-      console.log("OK");
-      setDisplaySelectedMenu(true);
-    }
-  }
-
-  return (
-    <button className={styles.nextButton} onClick={nextButtonClick}>次へ</button>
-  )
-}
-
-
-
 export const AppraisalEntryForm = () => {
   const [menuState, setMenuState] = useState(initialMenuState);
   const [isDisplayBackground, setDisplayBackground] = useState(false);
   const [isDisplaySelectedMenu, setDisplaySelectedMenu] = useState(false);
 
   const toggleModal = (value) => {
+    //  開く閉じる
     setDisplayBackground(!isDisplayBackground);
     setMenuState(prevMenuState => ({ ...prevMenuState, modals: {...prevMenuState.modals, [value]: !prevMenuState.modals[value] }}));
   }
@@ -93,21 +39,22 @@ export const AppraisalEntryForm = () => {
     setMenuState(prevMenuState => ({ ...prevMenuState, modals: initialMenuState.modals}));
   }
 
-  const changeMenu = (category, e) => {
-    e.preventDefault();
+  const updateMenu = (category, e) => { // eは{}で渡せないの？
+    // 選んだメニューを更新する
     const text = e.currentTarget.innerText;
 
+    e.preventDefault();
     setDisplayBackground(!isDisplayBackground);
-    setMenuState(prevMenuState => ({...prevMenuState, texts: { ...prevMenuState.texts, [category]: text } , modals: {...prevMenuState.modals, [category]: !prevMenuState.modals[category] }}));
+    setMenuState(prevMenuState => ({texts: { ...prevMenuState.texts, [category]: text } , modals: {...prevMenuState.modals, [category]: !prevMenuState.modals[category] }}));
   }
 
   return (
     <>
       <form>
         {courseCategories.map((val) => (
-          <SelectBox key={val} category={val} text={menuState.texts[val]} isModal={menuState.modals[val]} toggleModal={toggleModal} changeMenu={changeMenu} />
+          <SelectBox key={val} category={val} text={menuState.texts[val]} isModal={menuState.modals[val]} toggleModal={toggleModal} updateMenu={updateMenu} />
         ))}
-        <NextButton menu={menuState.texts} setDisplaySelectedMenu={setDisplaySelectedMenu} />
+        <NextButton menuTexts={menuState.texts} setDisplaySelectedMenu={setDisplaySelectedMenu} />
       </form>
 
       {isDisplayBackground && (
@@ -115,7 +62,7 @@ export const AppraisalEntryForm = () => {
       )}
 
       {isDisplaySelectedMenu && (
-        <SelectedMenu menu={menuState.texts} />
+        <SelectedMenu menuTexts={menuState.texts} />
       )}
    </>
   )
