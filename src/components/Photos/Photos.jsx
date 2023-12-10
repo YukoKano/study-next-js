@@ -20,7 +20,7 @@ export const Photos = () => {
             }
             }>
               <div >
-                <Image src={`${value.src}`} alt={ value.title} width={400} height={300}  className={ styles.image } />
+                <Image src={`/study-next-js${value.src}`} alt={ value.title} width={400} height={300}  className={ styles.image } />
               </div>
             </li>
           )
