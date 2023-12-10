@@ -86,3 +86,13 @@
   border-radius: 4px;
   background-color:cadetblue
 }
+
+.selectedMenu {
+  margin-top: 32px;
+  padding: 16px;
+  background-color: aliceblue;
+}
+
+.selectedMenuTitle:not(:first-child) {
+  margin-top: 8px;
+}

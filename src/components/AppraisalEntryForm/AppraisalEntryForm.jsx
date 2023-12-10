@@ -1,25 +1,163 @@
 import styles from '@/styles/AppraisalEntryForm.module.css'
 import { useState } from 'react'
 
- const appetizerItems = [{ label: "前菜" }, { label: "スープ" }, { label: "肉料理" }, { label: "デザート" }];
+const courses = [
+  {
+    label: "前菜",
+    value: "appetizer",
+    items: [
+      {
+        name: "サーモンのカルパッチョ",
+        value: "salmonCarappcio"
+      },
+      {
+        name: "きのこのマスタードマリネ",
+        value: "mustardMarinatedMushrooms"
+      },
+      {
+        name: "チーズとアボカドのピンチョス",
+        value: "cheeseAndAvocadoPinchos"
+      }
+    ]
+  },
+  {
+    label: "スープ",
+    value: "soup",
+    items: [
+      {
+        name: "コーンスープ",
+        value: "cornSoup"
+      },
+      {
+        name: "新玉ねぎのポタージュスープ",
+        value: "freshOnionPotageSoup"
+      },
+      {
+        name: "じゃがいもの冷製スープ",
+        value: "coldPotatoSoup"
+      }
+    ]
+  },
+  {
+    label: "肉料理",
+    value: "meatDish",
+    items: [
+      {
+        name: "ヒレステーキ",
+        value: "filletSteak"
+      },
+      {
+        name: "チキンソテーのチーズクリームソース",
+        value: "chickenSauteWithCheeseCreamSauce"
+      },
+      {
+        name: "骨付きポークチョップステーキ",
+        value: "boneInPorkChopSteak"
+      }
+    ]
+  },
+  {
+    label: "デザート",
+    value: "dessert",
+    items: [
+      {
+        name: "クレームブリュレ",
+        value: "cremeBrulee"
+      },
+      {
+        name: "オレンジシャーベット",
+        value: "orangeSherbet"
+      },
+      {
+        name: "フォンダン・オ・ショコラ",
+        value: "fondantAuChocolat"
+      }
+    ]
+  }
+];
 
-const AppetizerSelectBox = ({ value, handleClick, modal, toggleDisplayModal}) => {
+const Label = ({ text, toggleDisplayModal, type}) => {
+  const category = courses.find((e) => e.value === type);
   return (
     <>
-      <label className={styles.label}>{appetizerItems[0].label}</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal("appetizer")}>{value}</p>
-      {modal && (
-        <div className={`${styles.modal}`}>
-          <p>{appetizerItems[0].label}を選んでね</p>
-          <ul className={styles.ul}>
-            <li className={styles.list}><button onClick={handleClick} value='salmonCarappcio'>サーモンのカルパッチョ</button></li>
-            <li className={styles.list}><button onClick={handleClick} value='mustardMarinatedMushrooms'>きのこのマスタードマリネ</button></li>
-            <li className={styles.list}><button onClick={handleClick} value='cheeseAndAvocadoPinchos'>チーズとアボカドのピンチョス</button></li>
-          </ul>
-          <button onClick={() => toggleDisplayModal("appetizer")}>戻る</button>
-        </div>
-      )}
+      <label className={styles.label}>{category.label}</label>
+      <p className={styles.selectbox} onClick={() => toggleDisplayModal(category.value)}>{text}</p>
     </>
+  )
+}
+
+const List = ({ value, text, handleClick }) => {
+  return (
+    <li className={styles.list}><button onClick={handleClick} value={value}>{text}</button></li>
+  )
+}
+
+const Lists = ({ handleClick, type }) => {
+  const category = courses.find((e) => e.value === type);
+
+  if (!category || !category.items) {
+    console.error(`Category ${type} not found or has no items.`);
+    return null; // エラー処理や何も表示しない場合の処理を追加することも考えられます
+  }
+
+  return (
+    <ul className={styles.ul}>
+      {category.items.map((item) => (
+        <List
+          key={item.value}
+          value={item.value}
+          text={item.name}
+          handleClick={handleClick}
+        />
+      ))}
+    </ul>
+  )
+}
+
+const Modal = ({ modal, handleClick, handleModal, type }) => {
+  const category = courses.find((e) => e.value === type);
+
+  return (
+    modal && (
+      <div className={`${styles.modal}`}>
+        <p>{category.label}を選んでね</p>
+        <Lists handleClick={handleClick} type={type} />
+        <button onClick={() => handleModal(type)}>戻る</button>
+      </div>
+    )
+  )
+}
+
+const NextButton = ({ appetizer, soup, meatDish, dessert, setSelectedMenu }) => {
+  const notEntered = appetizer === "選択してください" ||  soup === "選択してください" || meatDish === "選択してください" || dessert === "選択してください"
+  const nextButtonClick = (e) => {
+    e.preventDefault();
+    if (notEntered) {
+      console.log("NG");
+    } else {
+      console.log("OK");
+      console.log(appetizer, soup, meatDish, dessert);
+      setSelectedMenu(true);
+    }
+  }
+
+  return (
+    <button className={styles.nextButton} onClick={nextButtonClick}>次へ</button>
+  )
+}
+
+const SelectedMenu = ({ appetizer, soup, meatDish, dessert }) => {
+  return (
+    <dl className={styles.selectedMenu} >
+      <dd className={styles.selectedMenuTitle}>前菜</dd>
+      <dt>{appetizer}</dt>
+      <dd className={styles.selectedMenuTitle}>スープ</dd>
+      <dt>{soup}</dt>
+      <dd className={styles.selectedMenuTitle}>肉料理</dd>
+      <dt>{meatDish}</dt>
+      <dd className={styles.selectedMenuTitle}>デザート</dd>
+      <dt>{dessert}</dt>
+    </dl>
   )
 }
 
@@ -35,6 +173,9 @@ export const AppraisalEntryForm = () => {
   const [soup, setSoup] = useState('選択してください');
   const [meatDish, setMeatDish] = useState('選択してください');
   const [dessert, setDessert] = useState('選択してください');
+
+  const [selectedMenu, setSelectedMenu] = useState(false);
+
 
   const toggleDisplayModal = (value) => { //handleHogeとかの方がいいけど一旦
 
@@ -83,68 +224,36 @@ export const AppraisalEntryForm = () => {
     setDessertModal(false);
   }
 
-  const nextButtonClick = (e) => {
-    e.preventDefault();
 
-    if (appetizer === "選択してください" ||  soup === "選択してください" || meatDish === "選択してください" || dessert === "選択してください") {
-      console.log("NG");
-    } else {
-      console.log("OK");
-      console.log(appetizer, soup, meatDish, dessert);
-    }
-  }
 
   return (
-    <form>
-      <AppetizerSelectBox value={appetizer} handleClick={handleAppetizer} modal={appetizerModal} toggleDisplayModal={toggleDisplayModal} />
+    <>
+      <form>
+        <Label text={appetizer} toggleDisplayModal={toggleDisplayModal} type="appetizer" />
+        <Modal modal={appetizerModal} handleClick={handleAppetizer} handleModal={toggleDisplayModal} type="appetizer" />
 
-      <label className={styles.label}>スープ</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal("soup")}>{soup}</p>
-      {soupModal && (
-        <div className={`${styles.modal}`}>
-          <p>スープを選んでね</p>
-          <ul className={styles.ul}>
-            <li className={styles.list}><button onClick={handleSoup} value='cornSoup'>コーンスープ</button></li>
-            <li className={styles.list}><button onClick={handleSoup} value='freshOnionPotageSoup'>新玉ねぎのポタージュスープ</button></li>
-            <li className={styles.list}><button onClick={handleSoup} value='coldPotatoSoup'>じゃがいもの冷製スープ</button></li>
-          </ul>
-          <button onClick={() => toggleDisplayModal("soup")}>戻る</button>
-        </div>
+        <Label text={soup} toggleDisplayModal={toggleDisplayModal} type="soup" />
+        <Modal modal={soupModal} handleClick={handleSoup} handleModal={toggleDisplayModal} type="soup" />
+
+
+        <Label text={meatDish} toggleDisplayModal={toggleDisplayModal} type="meatDish" />
+        <Modal modal={meatDishModal} handleClick={handleMeatDish} handleModal={toggleDisplayModal} type="meatDish" />
+
+
+        <Label text={dessert} toggleDisplayModal={toggleDisplayModal} type="dessert" />
+        <Modal modal={dessertModal} handleClick={handleDessert} handleModal={toggleDisplayModal} type="dessert" />
+
+
+        {displayBackground && (
+          <div className={styles.background} onClick={handleBackground}></div>
+        )}
+
+        <NextButton appetizer={appetizer} soup={soup} meatDish={meatDish} dessert={dessert} setSelectedMenu={setSelectedMenu} />
+      </form>
+
+      {selectedMenu && (
+        <SelectedMenu appetizer={appetizer} soup={soup} meatDish={meatDish} dessert={dessert} />
       )}
-
-      <label className={styles.label}>肉料理</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal("meatDish")}>{meatDish}</p>
-      {meatDishModal && (
-        <div className={`${styles.modal}`}>
-          <p>肉料理を選んでね</p>
-          <ul className={styles.ul}>
-            <li className={styles.list}><button onClick={handleMeatDish} value='filletSteak'>ヒレステーキ</button></li>
-            <li className={styles.list}><button onClick={handleMeatDish} value='chickenSauteWithCheeseCreamSauce'>チキンソテーのチーズクリームソース</button></li>
-            <li className={styles.list}><button onClick={handleMeatDish} value='bone-inPorkChopSteak'>骨付きポークチョップステーキ</button></li>
-          </ul>
-          <button onClick={() => toggleDisplayModal("meatDish")}>戻る</button>
-        </div>
-      )}
-
-      <label className={styles.label}>デザート</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal("dessert")}>{dessert}</p>
-      {dessertModal && (
-        <div className={`${styles.modal}`}>
-          <p>デザートを選んでね</p>
-          <ul className={styles.ul}>
-            <li className={styles.list}><button onClick={handleDessert} value='cremeBrulee'>クレームブリュレ</button></li>
-            <li className={styles.list}><button onClick={handleDessert} value='orangeSherbet'>オレンジシャーベット</button></li>
-            <li className={styles.list}><button onClick={handleDessert} value='fondantAuChocolat'>フォンダン・オ・ショコラ</button></li>
-          </ul>
-          <button onClick={() => toggleDisplayModal("dessert")}>戻る</button>
-        </div>
-      )}
-
-      {displayBackground && (
-        <div className={`${styles.background}`} onClick={handleBackground}></div>
-      )}
-
-      <button className={styles.nextButton} onClick={nextButtonClick}>次へ</button>
-    </form>
+   </>
   )
 }
