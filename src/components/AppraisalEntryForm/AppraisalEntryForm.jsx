@@ -1,7 +1,8 @@
 import styles from '@/styles/AppraisalEntryForm.module.css'
 import { useState } from 'react'
 import { COURSES } from '@/constants/COURSES';
-
+import { Lists } from '../AppraisalEntryFormLists/AppraisalEntryFormLists';
+import { SelectedMenu } from '../AppraisalEntryFormSelectedMenu/AppraisalEntryFormSelectedMenu';
 
 const Label = ({ text, toggleDisplayModal, type}) => {
   const category = COURSES.find((e) => e.value === type);
@@ -13,48 +14,7 @@ const Label = ({ text, toggleDisplayModal, type}) => {
   )
 }
 
-
-
-
-
-
-const List = ({ value, text, handleClick }) => {
-  return (
-    <li className={styles.list}><button onClick={handleClick} value={value}>{text}</button></li>
-  )
-}
-
-
-
-
-
-const Lists = ({ handleClick, type }) => {
-  const category = COURSES.find((e) => e.value === type);
-
-  if (!category || !category.items) {
-    console.error(`Category ${type} not found or has no items.`);
-    return null; // エラー処理や何も表示しない場合の処理を追加することも考えられます
-  }
-
-  return (
-    <ul className={styles.ul}>
-      {category.items.map((item) => (
-        <List
-          key={item.value}
-          value={item.value}
-          text={item.name}
-          handleClick={handleClick}
-        />
-      ))}
-    </ul>
-  )
-}
-
-
-
-
-
-const Modal = ({ modal, handleClick, handleModal, type }) => {
+const Modal = ({ modal, handleClick, toggleDisplayModal, type }) => {
   const category = COURSES.find((e) => e.value === type);
 
   return (
@@ -62,25 +22,30 @@ const Modal = ({ modal, handleClick, handleModal, type }) => {
       <div className={`${styles.modal}`}>
         <p>{category.label}を選んでね</p>
         <Lists handleClick={handleClick} type={type} />
-        <button onClick={() => handleModal(type)}>戻る</button>
+        <button onClick={() => toggleDisplayModal(type)}>戻る</button>
       </div>
     )
   )
 }
 
+const SelectBox = ({ text, valueModal, type, toggleDisplayModal, handleMenu }) => {
+  return (
+    <>
+      <Label text={text} toggleDisplayModal={() => toggleDisplayModal(type)} type={type} />
+      <Modal modal={valueModal} handleClick={(e) => handleMenu(type, e)} toggleDisplayModal={() => toggleDisplayModal(type)} type={type} />
+    </>
+  )
+}
 
 
-
-
-const NextButton = ({ appetizer, soup, meatDish, dessert, setSelectedMenu }) => {
-  const notEntered = appetizer === "選択してください" ||  soup === "選択してください" || meatDish === "選択してください" || dessert === "選択してください"
+const NextButton = ({ menu, setSelectedMenu }) => {
+  const notEntered = menu.appetizer === "選択してください" ||  menu.soup === "選択してください" || menu.meatDish === "選択してください" || menu.dessert === "選択してください"
   const nextButtonClick = (e) => {
     e.preventDefault();
     if (notEntered) {
       console.log("NG");
     } else {
       console.log("OK");
-      console.log(appetizer, soup, meatDish, dessert);
       setSelectedMenu(true);
     }
   }
@@ -89,27 +54,6 @@ const NextButton = ({ appetizer, soup, meatDish, dessert, setSelectedMenu }) => 
     <button className={styles.nextButton} onClick={nextButtonClick}>次へ</button>
   )
 }
-
-
-
-
-
-
-const SelectedMenu = ({ appetizer, soup, meatDish, dessert }) => {
-  return (
-    <dl className={styles.selectedMenu} >
-      <dd className={styles.selectedMenuTitle}>前菜</dd>
-      <dt>{appetizer}</dt>
-      <dd className={styles.selectedMenuTitle}>スープ</dd>
-      <dt>{soup}</dt>
-      <dd className={styles.selectedMenuTitle}>肉料理</dd>
-      <dt>{meatDish}</dt>
-      <dd className={styles.selectedMenuTitle}>デザート</dd>
-      <dt>{dessert}</dt>
-    </dl>
-  )
-}
-
 
 
 
@@ -129,6 +73,12 @@ export const AppraisalEntryForm = () => {
 
   const [selectedMenu, setSelectedMenu] = useState(false);
 
+  const menu = {
+    appetizer: appetizer,
+    soup: soup,
+    meatDish: meatDish,
+    dessert: dessert
+  }
 
   const toggleDisplayModal = (value) => {
     setDisplayBackground(!displayBackground);
@@ -160,6 +110,8 @@ export const AppraisalEntryForm = () => {
       case "dessert":
         setDessert(text);
         break;
+      default:
+        break;
     }
     toggleDisplayModal(type);
   }
@@ -172,35 +124,23 @@ export const AppraisalEntryForm = () => {
     setDessertModal(false);
   }
 
-
-
   return (
     <>
       <form>
-        <Label text={appetizer} toggleDisplayModal={toggleDisplayModal} type="appetizer" />
-        <Modal modal={appetizerModal} handleClick={(e)=>{handleMenu("appetizer", e)}} handleModal={toggleDisplayModal} type="appetizer" />
-
-        <Label text={soup} toggleDisplayModal={toggleDisplayModal} type="soup" />
-        <Modal modal={soupModal} handleClick={(e)=>{handleMenu("soup", e)}} handleModal={toggleDisplayModal} type="soup" />
-
-
-        <Label text={meatDish} toggleDisplayModal={toggleDisplayModal} type="meatDish" />
-        <Modal modal={meatDishModal} handleClick={(e)=>{handleMenu("meatDish", e)}} handleModal={toggleDisplayModal} type="meatDish" />
-
-
-        <Label text={dessert} toggleDisplayModal={toggleDisplayModal} type="dessert" />
-        <Modal modal={dessertModal} handleClick={(e)=>{handleMenu("dessert", e)}} handleModal={toggleDisplayModal} type="dessert" />
-
+        <SelectBox type="appetizer" text={appetizer} valueModal={appetizerModal} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="soup" text={soup} valueModal={soupModal} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="meatDish" text={meatDish} valueModal={meatDishModal} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
+        <SelectBox type="dessert" text={dessert} valueModal={dessertModal} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
 
         {displayBackground && (
           <div className={styles.background} onClick={handleBackground}></div>
         )}
 
-        <NextButton appetizer={appetizer} soup={soup} meatDish={meatDish} dessert={dessert} setSelectedMenu={setSelectedMenu} />
+        <NextButton menu={menu} setSelectedMenu={setSelectedMenu} />
       </form>
 
       {selectedMenu && (
-        <SelectedMenu appetizer={appetizer} soup={soup} meatDish={meatDish} dessert={dessert} />
+        <SelectedMenu menu={menu} />
       )}
    </>
   )
