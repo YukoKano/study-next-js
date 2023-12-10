@@ -13,11 +13,20 @@ const Label = ({ text, toggleDisplayModal, type}) => {
   )
 }
 
+
+
+
+
+
 const List = ({ value, text, handleClick }) => {
   return (
     <li className={styles.list}><button onClick={handleClick} value={value}>{text}</button></li>
   )
 }
+
+
+
+
 
 const Lists = ({ handleClick, type }) => {
   const category = COURSES.find((e) => e.value === type);
@@ -41,6 +50,10 @@ const Lists = ({ handleClick, type }) => {
   )
 }
 
+
+
+
+
 const Modal = ({ modal, handleClick, handleModal, type }) => {
   const category = COURSES.find((e) => e.value === type);
 
@@ -54,6 +67,10 @@ const Modal = ({ modal, handleClick, handleModal, type }) => {
     )
   )
 }
+
+
+
+
 
 const NextButton = ({ appetizer, soup, meatDish, dessert, setSelectedMenu }) => {
   const notEntered = appetizer === "選択してください" ||  soup === "選択してください" || meatDish === "選択してください" || dessert === "選択してください"
@@ -73,6 +90,11 @@ const NextButton = ({ appetizer, soup, meatDish, dessert, setSelectedMenu }) => 
   )
 }
 
+
+
+
+
+
 const SelectedMenu = ({ appetizer, soup, meatDish, dessert }) => {
   return (
     <dl className={styles.selectedMenu} >
@@ -87,6 +109,10 @@ const SelectedMenu = ({ appetizer, soup, meatDish, dessert }) => {
     </dl>
   )
 }
+
+
+
+
 
 export const AppraisalEntryForm = () => {
   const [displayBackground, setDisplayBackground] = useState(false);
@@ -104,10 +130,8 @@ export const AppraisalEntryForm = () => {
   const [selectedMenu, setSelectedMenu] = useState(false);
 
 
-  const toggleDisplayModal = (value) => { //handleHogeとかの方がいいけど一旦
-
+  const toggleDisplayModal = (value) => {
     setDisplayBackground(!displayBackground);
-
     if (value === "appetizer") {
       setAppetizerModal(!appetizerModal);
     } else if (value === "soup") {
@@ -119,28 +143,25 @@ export const AppraisalEntryForm = () => {
     }
   }
 
-  const handleAppetizer = (e) => {
-    e.preventDefault()
-    setAppetizer(e.currentTarget.innerText)
-    toggleDisplayModal("appetizer");
-  }
+  const handleMenu = (type, e) => {
+    e.preventDefault();
+    const text = e.currentTarget.innerText;
 
-  const handleSoup = (e) => {
-    e.preventDefault()
-    setSoup(e.currentTarget.innerText);
-    toggleDisplayModal("soup");
-  }
-
-  const handleMeatDish = (e) => {
-    e.preventDefault()
-    setMeatDish(e.currentTarget.innerText)
-    toggleDisplayModal("meatDish");
-  }
-
-  const handleDessert = (e) => {
-    e.preventDefault()
-    setDessert(e.currentTarget.innerText)
-    toggleDisplayModal("dessert");
+    switch (type) {
+      case "appetizer":
+        setAppetizer(text);
+        break;
+      case "soup":
+        setSoup(text);
+        break;
+      case "meatDish":
+        setMeatDish(text);
+        break;
+      case "dessert":
+        setDessert(text);
+        break;
+    }
+    toggleDisplayModal(type);
   }
 
   const handleBackground = () => {
@@ -157,18 +178,18 @@ export const AppraisalEntryForm = () => {
     <>
       <form>
         <Label text={appetizer} toggleDisplayModal={toggleDisplayModal} type="appetizer" />
-        <Modal modal={appetizerModal} handleClick={handleAppetizer} handleModal={toggleDisplayModal} type="appetizer" />
+        <Modal modal={appetizerModal} handleClick={(e)=>{handleMenu("appetizer", e)}} handleModal={toggleDisplayModal} type="appetizer" />
 
         <Label text={soup} toggleDisplayModal={toggleDisplayModal} type="soup" />
-        <Modal modal={soupModal} handleClick={handleSoup} handleModal={toggleDisplayModal} type="soup" />
+        <Modal modal={soupModal} handleClick={(e)=>{handleMenu("soup", e)}} handleModal={toggleDisplayModal} type="soup" />
 
 
         <Label text={meatDish} toggleDisplayModal={toggleDisplayModal} type="meatDish" />
-        <Modal modal={meatDishModal} handleClick={handleMeatDish} handleModal={toggleDisplayModal} type="meatDish" />
+        <Modal modal={meatDishModal} handleClick={(e)=>{handleMenu("meatDish", e)}} handleModal={toggleDisplayModal} type="meatDish" />
 
 
         <Label text={dessert} toggleDisplayModal={toggleDisplayModal} type="dessert" />
-        <Modal modal={dessertModal} handleClick={handleDessert} handleModal={toggleDisplayModal} type="dessert" />
+        <Modal modal={dessertModal} handleClick={(e)=>{handleMenu("dessert", e)}} handleModal={toggleDisplayModal} type="dessert" />
 
 
         {displayBackground && (
