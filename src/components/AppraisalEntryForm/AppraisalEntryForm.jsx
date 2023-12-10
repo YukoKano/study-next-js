@@ -4,51 +4,69 @@ import { COURSES } from '@/constants/COURSES';
 import { Lists } from '../AppraisalEntryFormLists/AppraisalEntryFormLists';
 import { SelectedMenu } from '../AppraisalEntryFormSelectedMenu/AppraisalEntryFormSelectedMenu';
 
-const findCategory = (type) => COURSES.find((e) => e.value === type);
+const courseCategories = COURSES.map((val) => val.course);
+const findCategory = (category) => COURSES.find((val) => val.course === category);
 
-const Label = ({ text, toggleDisplayModal, type}) => {
-  const category = findCategory(type);
+const initialMenuState = {
+  modals : {
+    appetizer: false,
+    soup: false,
+    meatDish: false,
+    dessert: false
+  },
+  texts : {
+    appetizer: '選択してください',
+    soup: '選択してください',
+    meatDish: '選択してください',
+    dessert: '選択してください'
+  }
+}
+
+const Label = ({ text, toggleModal, category}) => {
+  const menu = findCategory(category);
+
   return (
     <>
-      <label className={styles.label}>{category.label}</label>
-      <p className={styles.selectbox} onClick={() => toggleDisplayModal(category.value)}>{text}</p>
+      <label className={styles.label}>{menu.label}</label>
+      <p className={styles.selectbox} onClick={() => toggleModal(menu.course)}>{text}</p>
     </>
   )
 }
 
-const Modal = ({ modal, handleClick, toggleDisplayModal, type }) => {
-  const category = findCategory(type);
+const Modal = ({ isModal, handleClick, toggleModal, category }) => {
+  const menu = findCategory(category);
 
   return (
-    modal && (
+    isModal && (
       <div className={`${styles.modal}`}>
-        <p>{category.label}を選んでね</p>
-        <Lists handleClick={handleClick} type={type} />
-        <button onClick={() => toggleDisplayModal(type)}>戻る</button>
+        <p>{menu.label}を選んでね</p>
+        <Lists handleClick={handleClick} category={category} />
+        <button onClick={() => toggleModal(category)}>戻る</button>
       </div>
     )
   )
 }
 
-const SelectBox = ({ text, valueModal, type, toggleDisplayModal, handleMenu }) => {
+const SelectBox = ({ text, isModal, category, toggleModal, changeMenu }) => {
   return (
     <>
-      <Label text={text} toggleDisplayModal={() => toggleDisplayModal(type)} type={type} />
-      <Modal modal={valueModal} handleClick={(e) => handleMenu(type, e)} toggleDisplayModal={() => toggleDisplayModal(type)} type={type} />
+      <Label text={text} toggleModal={() => toggleModal(category)} category={category} />
+      <Modal isModal={isModal} handleClick={(e) => changeMenu(category, e)} toggleModal={() => toggleModal(category)} category={category} />
     </>
   )
 }
 
 
-const NextButton = ({ menu, setSelectedMenu }) => {
-  const notEntered = Object.values(menu).some(value => value === '選択してください'); // ここ分かってない
+const NextButton = ({ menu, setDisplaySelectedMenu }) => {
+  const notEntered = Object.values(menu).some(val => val === '選択してください'); // ここ分かってない
+
   const nextButtonClick = (e) => {
     e.preventDefault();
     if (notEntered) {
       console.log("NG");
     } else {
       console.log("OK");
-      setSelectedMenu(true);
+      setDisplaySelectedMenu(true);
     }
   }
 
@@ -57,60 +75,46 @@ const NextButton = ({ menu, setSelectedMenu }) => {
   )
 }
 
-const initialMenuState = {
-    modals : {
-      appetizer: false,
-      soup: false,
-      meatDish: false,
-      dessert: false
-    },
-    texts : {
-      appetizer: '選択してください',
-      soup: '選択してください',
-      meatDish: '選択してください',
-      dessert: '選択してください'
-    }
-}
+
 
 export const AppraisalEntryForm = () => {
-  const [displayBackground, setDisplayBackground] = useState(false);
-  const [menuState, setMenuState] = useState(initialMenuState)
-  const [selectedMenu, setSelectedMenu] = useState(false);
+  const [menuState, setMenuState] = useState(initialMenuState);
+  const [isDisplayBackground, setDisplayBackground] = useState(false);
+  const [isDisplaySelectedMenu, setDisplaySelectedMenu] = useState(false);
 
-  const toggleDisplayModal = (value) => {
-    setDisplayBackground(!displayBackground);
+  const toggleModal = (value) => {
+    setDisplayBackground(!isDisplayBackground);
     setMenuState(prevMenuState => ({ ...prevMenuState, modals: {...prevMenuState.modals, [value]: !prevMenuState.modals[value] }}));
   }
 
-  const handleMenu = (type, e) => {
+  const hideBackground = () => {
+    // 初期化する
+    setDisplayBackground(false);
+    setMenuState(prevMenuState => ({ ...prevMenuState, modals: initialMenuState.modals}));
+  }
+
+  const changeMenu = (category, e) => {
     e.preventDefault();
     const text = e.currentTarget.innerText;
 
-    setMenuState(prevMenuState => ({ ...prevMenuState, texts: { ...prevMenuState.texts, [type]: text } }));
-    setDisplayBackground(!displayBackground);
-    setMenuState(prevMenuState => ({ ...prevMenuState, modals: {...prevMenuState.modals, [type]: !prevMenuState.modals[type] }}));
-  }
-
-  const handleBackground = () => {
-    setDisplayBackground(false);
-    setMenuState(prevMenuState => ({ ...prevMenuState, modals: initialMenuState.modals}));
+    setDisplayBackground(!isDisplayBackground);
+    setMenuState(prevMenuState => ({...prevMenuState, texts: { ...prevMenuState.texts, [category]: text } , modals: {...prevMenuState.modals, [category]: !prevMenuState.modals[category] }}));
   }
 
   return (
     <>
       <form>
-        <SelectBox type="appetizer" text={menuState.texts.appetizer} valueModal={menuState.modals.appetizer} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="soup" text={menuState.texts.soup} valueModal={menuState.modals.soup} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="meatDish" text={menuState.texts.meatDish} valueModal={menuState.modals.meatDish} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <SelectBox type="dessert" text={menuState.texts.dessert} valueModal={menuState.modals.dessert} toggleDisplayModal={toggleDisplayModal} handleMenu={handleMenu} />
-        <NextButton menu={menuState.texts} setSelectedMenu={setSelectedMenu} />
+        {courseCategories.map((val) => (
+          <SelectBox key={val} category={val} text={menuState.texts[val]} isModal={menuState.modals[val]} toggleModal={toggleModal} changeMenu={changeMenu} />
+        ))}
+        <NextButton menu={menuState.texts} setDisplaySelectedMenu={setDisplaySelectedMenu} />
       </form>
 
-      {displayBackground && (
-        <div className={styles.background} onClick={handleBackground}></div>
+      {isDisplayBackground && (
+        <div className={styles.background} onClick={hideBackground}></div>
       )}
 
-      {selectedMenu && (
+      {isDisplaySelectedMenu && (
         <SelectedMenu menu={menuState.texts} />
       )}
    </>

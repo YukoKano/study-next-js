@@ -1,7 +1,7 @@
 export const COURSES = [
   {
     label: "前菜",
-    value: "appetizer",
+    course: "appetizer",
     items: [
       {
         name: "サーモンのカルパッチョ",
@@ -19,7 +19,7 @@ export const COURSES = [
   },
   {
     label: "スープ",
-    value: "soup",
+    course: "soup",
     items: [
       {
         name: "コーンスープ",
@@ -37,7 +37,7 @@ export const COURSES = [
   },
   {
     label: "肉料理",
-    value: "meatDish",
+    course: "meatDish",
     items: [
       {
         name: "ヒレステーキ",
@@ -55,7 +55,7 @@ export const COURSES = [
   },
   {
     label: "デザート",
-    value: "dessert",
+    course: "dessert",
     items: [
       {
         name: "クレームブリュレ",
