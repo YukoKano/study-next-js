@@ -4,6 +4,7 @@ import { COURSES } from "@/constants/COURSES";
 import { SelectedMenu } from "../SelectedMenu/SelectedMenu";
 import { SelectBox } from "../SelectBox/SelectBox";
 import { NextButton } from "../NextButton/NextButton";
+import { PersonalInformationForm } from "../PersonalInformationForm/PersonalInformationForm";
 
 const courseCategories = COURSES.map((val) => val.course);
 
@@ -49,7 +50,6 @@ export const AppraisalEntryForm = () => {
   };
 
   const updateMenu = (category, e) => {
-    // eは{}で渡せないの？
     // 選んだメニューを更新する
     const text = e.currentTarget.innerText;
 
@@ -77,17 +77,19 @@ export const AppraisalEntryForm = () => {
             updateMenu={updateMenu}
           />
         ))}
-        <NextButton
-          menuTexts={menuState.texts}
-          setDisplaySelectedMenu={setDisplaySelectedMenu}
-        />
+        {!isDisplaySelectedMenu && (
+          <NextButton
+            menuTexts={menuState.texts}
+            setDisplaySelectedMenu={setDisplaySelectedMenu}
+          />
+        )}
+        {isDisplaySelectedMenu && <PersonalInformationForm />}
       </form>
 
       {isDisplayBackground && (
         <div className={styles.background} onClick={hideBackground}></div>
       )}
-
-      {isDisplaySelectedMenu && <SelectedMenu menuTexts={menuState.texts} />}
+      {/* {isDisplaySelectedMenu && <SelectedMenu menuTexts={menuState.texts} />} */}
     </>
   );
 };
