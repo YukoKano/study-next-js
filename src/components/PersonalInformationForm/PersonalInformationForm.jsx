@@ -34,6 +34,16 @@ export const PersonalInformationForm = () => {
         name="tel"
         required
       />
+      <label className={styles.label} htmlFor="tel">
+        メールアドレス <span className={styles.requiredLabel}>※必須</span>
+      </label>
+      <input
+        className={styles.textbox}
+        type="mail"
+        id="mail"
+        name="mail"
+        required
+      />
 
       <label className={styles.label} htmlFor="radio">
         キャンペーンに申し込みますか？{" "}
