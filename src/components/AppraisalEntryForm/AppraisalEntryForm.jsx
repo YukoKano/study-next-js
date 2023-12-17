@@ -1,12 +1,9 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 import { useState } from "react";
-import { COURSES } from "@/constants/COURSES";
 import { SelectedMenu } from "../SelectedMenu/SelectedMenu";
-import { SelectBox } from "../SelectBox/SelectBox";
 import { NextButton } from "../NextButton/NextButton";
 import { PersonalInformationForm } from "../PersonalInformationForm/PersonalInformationForm";
-
-const courseCategories = COURSES.map((val) => val.course);
+import { MenuForm } from "../MenuForm/MenuForm";
 
 const initialMenuState = {
   modals: {
@@ -67,29 +64,28 @@ export const AppraisalEntryForm = () => {
   return (
     <>
       <form>
-        {courseCategories.map((val) => (
-          <SelectBox
-            key={val}
-            category={val}
-            text={menuState.texts[val]}
-            isModal={menuState.modals[val]}
-            toggleModal={toggleModal}
-            updateMenu={updateMenu}
-          />
-        ))}
+        <MenuForm
+          menuState={menuState}
+          toggleModal={toggleModal}
+          updateMenu={updateMenu}
+        />
         {!isDisplaySelectedMenu && (
           <NextButton
             menuTexts={menuState.texts}
             setDisplaySelectedMenu={setDisplaySelectedMenu}
           />
         )}
-        {isDisplaySelectedMenu && <PersonalInformationForm />}
+        {isDisplaySelectedMenu && (
+          <>
+            <SelectedMenu menuTexts={menuState.texts} />
+            <PersonalInformationForm />
+          </>
+        )}
       </form>
 
       {isDisplayBackground && (
         <div className={styles.background} onClick={hideBackground}></div>
       )}
-      {/* {isDisplaySelectedMenu && <SelectedMenu menuTexts={menuState.texts} />} */}
     </>
   );
 };
