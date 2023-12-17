@@ -1,6 +1,6 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 
-export const NextButton = ({ menuTexts, setDisplaySelectedMenu }) => {
+export const NextButton = ({ menuTexts, setIsMenuOK }) => {
   const notEntered = Object.values(menuTexts).some(
     (val) => val === "選択してください"
   ); // ここ分かってない
@@ -11,7 +11,7 @@ export const NextButton = ({ menuTexts, setDisplaySelectedMenu }) => {
       console.log("NG");
     } else {
       console.log("OK");
-      setDisplaySelectedMenu(true);
+      setIsMenuOK(true);
     }
   };
 

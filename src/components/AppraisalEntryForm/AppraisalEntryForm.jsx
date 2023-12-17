@@ -4,6 +4,7 @@ import { SelectedMenu } from "../SelectedMenu/SelectedMenu";
 import { NextButton } from "../NextButton/NextButton";
 import { PersonalInformationForm } from "../PersonalInformationForm/PersonalInformationForm";
 import { MenuForm } from "../MenuForm/MenuForm";
+import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
 
 const initialMenuState = {
   modals: {
@@ -25,14 +26,15 @@ const initialPersonalInfoState = {
   postcode: "",
   tel: "",
   email: "",
-  radio: "",
+  radio: false,
 };
 
 export const AppraisalEntryForm = () => {
   const [menuState, setMenuState] = useState(initialMenuState);
   const [isDisplayBackground, setDisplayBackground] = useState(false);
 
-  const [isDisplaySelectedMenu, setDisplaySelectedMenu] = useState(false);
+  const [isMenuOK, setIsMenuOK] = useState(false);
+  const [isAllOK, setIsAllOK] = useState(false);
 
   const [personalInfo, setPersonalInfo] = useState(initialPersonalInfoState);
 
@@ -80,23 +82,30 @@ export const AppraisalEntryForm = () => {
           toggleModal={toggleModal}
           updateMenu={updateMenu}
         />
-        {!isDisplaySelectedMenu && (
-          <NextButton
-            menuTexts={menuState.texts}
-            setDisplaySelectedMenu={setDisplaySelectedMenu}
-          />
-        )}
-        {isDisplaySelectedMenu && (
+        {isMenuOK ? (
           <>
-            <SelectedMenu menuTexts={menuState.texts} />
             <PersonalInformationForm
               personalInfo={personalInfo}
               setPersonalInfo={setPersonalInfo}
+              setIsAllOK={setIsAllOK}
             />
           </>
+        ) : (
+          <NextButton menuTexts={menuState.texts} setIsMenuOK={setIsMenuOK} />
         )}
+        {isAllOK && (
+          <SelectedMenu
+            menuTexts={Object.assign(menuState.texts, personalInfo)}
+          />
+        )}
+        {!isMenuOK ||
+          (!isAllOK && (
+            <ConfirmButton
+              personalInfo={personalInfo}
+              setIsAllOK={setIsAllOK}
+            />
+          ))}
       </form>
-
       {isDisplayBackground && (
         <div className={styles.background} onClick={hideBackground}></div>
       )}

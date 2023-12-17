@@ -1,7 +1,11 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
 
-export const PersonalInformationForm = ({ personalInfo, setPersonalInfo }) => {
+export const PersonalInformationForm = ({
+  personalInfo,
+  setPersonalInfo,
+  setIsAllOK,
+}) => {
   const handleOnChange = (e) => {
     setPersonalInfo((prevInfo) => {
       return { ...prevInfo, [e.target.name]: e.target.value };
@@ -85,8 +89,6 @@ export const PersonalInformationForm = ({ personalInfo, setPersonalInfo }) => {
         />
         <label htmlFor="no">いいえ、申し込みません。</label>
       </div>
-
-      <ConfirmButton />
     </>
   );
 };
