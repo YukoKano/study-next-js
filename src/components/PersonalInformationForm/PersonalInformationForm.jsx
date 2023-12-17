@@ -1,7 +1,19 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
 
-export const PersonalInformationForm = () => {
+export const PersonalInformationForm = ({ personalInfo, setPersonalInfo }) => {
+  const handleOnChange = (e) => {
+    setPersonalInfo((prevInfo) => {
+      return { ...prevInfo, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleRadioChange = (e) => {
+    setPersonalInfo((prevInfo) => {
+      return { ...prevInfo, [e.target.name]: e.target.id === "yes" };
+    });
+  };
+
   return (
     <>
       <label className={styles.label} htmlFor="name">
@@ -12,6 +24,7 @@ export const PersonalInformationForm = () => {
         type="text"
         id="name"
         name="name"
+        onChange={handleOnChange}
         required
       />
       <label className={styles.label} htmlFor="postcode">
@@ -22,6 +35,7 @@ export const PersonalInformationForm = () => {
         type="number"
         id="postcode"
         name="postcode"
+        onChange={handleOnChange}
         required
       />
       <label className={styles.label} htmlFor="tel">
@@ -32,6 +46,7 @@ export const PersonalInformationForm = () => {
         type="tel"
         id="tel"
         name="tel"
+        onChange={handleOnChange}
         required
       />
       <label className={styles.label} htmlFor="tel">
@@ -39,9 +54,10 @@ export const PersonalInformationForm = () => {
       </label>
       <input
         className={styles.textbox}
-        type="mail"
-        id="mail"
-        name="mail"
+        type="email"
+        id="email"
+        name="email"
+        onChange={handleOnChange}
         required
       />
 
@@ -50,11 +66,23 @@ export const PersonalInformationForm = () => {
         <span className={styles.requiredLabel}>※必須</span>
       </label>
       <div className={styles.radioButton}>
-        <input type="radio" id="yes" name="radio" required />
+        <input
+          type="radio"
+          id="yes"
+          name="radio"
+          onChange={handleRadioChange}
+          required
+        />
         <label htmlFor="yes">はい、申し込みます。</label>
       </div>
       <div className={styles.radioButton}>
-        <input type="radio" id="no" name="radio" required />
+        <input
+          type="radio"
+          id="no"
+          name="radio"
+          onChange={handleRadioChange}
+          required
+        />
         <label htmlFor="no">いいえ、申し込みません。</label>
       </div>
 

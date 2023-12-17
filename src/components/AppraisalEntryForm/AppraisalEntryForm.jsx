@@ -20,10 +20,21 @@ const initialMenuState = {
   },
 };
 
+const initialPersonalInfoState = {
+  name: "",
+  postcode: "",
+  tel: "",
+  email: "",
+  radio: "",
+};
+
 export const AppraisalEntryForm = () => {
   const [menuState, setMenuState] = useState(initialMenuState);
   const [isDisplayBackground, setDisplayBackground] = useState(false);
+
   const [isDisplaySelectedMenu, setDisplaySelectedMenu] = useState(false);
+
+  const [personalInfo, setPersonalInfo] = useState(initialPersonalInfoState);
 
   const toggleModal = (value) => {
     //  開く閉じる
@@ -78,7 +89,10 @@ export const AppraisalEntryForm = () => {
         {isDisplaySelectedMenu && (
           <>
             <SelectedMenu menuTexts={menuState.texts} />
-            <PersonalInformationForm />
+            <PersonalInformationForm
+              personalInfo={personalInfo}
+              setPersonalInfo={setPersonalInfo}
+            />
           </>
         )}
       </form>
