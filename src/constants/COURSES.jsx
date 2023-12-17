@@ -5,17 +5,17 @@ export const COURSES = [
     items: [
       {
         name: "サーモンのカルパッチョ",
-        value: "salmonCarappcio"
+        value: "salmonCarappcio",
       },
       {
         name: "きのこのマスタードマリネ",
-        value: "mustardMarinatedMushrooms"
+        value: "mustardMarinatedMushrooms",
       },
       {
         name: "チーズとアボカドのピンチョス",
-        value: "cheeseAndAvocadoPinchos"
-      }
-    ]
+        value: "cheeseAndAvocadoPinchos",
+      },
+    ],
   },
   {
     label: "スープ",
@@ -23,17 +23,17 @@ export const COURSES = [
     items: [
       {
         name: "コーンスープ",
-        value: "cornSoup"
+        value: "cornSoup",
       },
       {
         name: "新玉ねぎのポタージュスープ",
-        value: "freshOnionPotageSoup"
+        value: "freshOnionPotageSoup",
       },
       {
         name: "じゃがいもの冷製スープ",
-        value: "coldPotatoSoup"
-      }
-    ]
+        value: "coldPotatoSoup",
+      },
+    ],
   },
   {
     label: "肉料理",
@@ -41,17 +41,17 @@ export const COURSES = [
     items: [
       {
         name: "ヒレステーキ",
-        value: "filletSteak"
+        value: "filletSteak",
       },
       {
         name: "チキンソテーのチーズクリームソース",
-        value: "chickenSauteWithCheeseCreamSauce"
+        value: "chickenSauteWithCheeseCreamSauce",
       },
       {
         name: "骨付きポークチョップステーキ",
-        value: "boneInPorkChopSteak"
-      }
-    ]
+        value: "boneInPorkChopSteak",
+      },
+    ],
   },
   {
     label: "デザート",
@@ -59,16 +59,16 @@ export const COURSES = [
     items: [
       {
         name: "クレームブリュレ",
-        value: "cremeBrulee"
+        value: "cremeBrulee",
       },
       {
         name: "オレンジシャーベット",
-        value: "orangeSherbet"
+        value: "orangeSherbet",
       },
       {
         name: "フォンダン・オ・ショコラ",
-        value: "fondantAuChocolat"
-      }
-    ]
-  }
+        value: "fondantAuChocolat",
+      },
+    ],
+  },
 ];

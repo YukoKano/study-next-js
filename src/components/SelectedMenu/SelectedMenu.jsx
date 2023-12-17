@@ -1,10 +1,10 @@
-import styles from '@/styles/AppraisalEntryForm.module.css'
+import styles from "@/styles/AppraisalEntryForm.module.css";
 
 export const SelectedMenu = ({ menuTexts }) => {
   return (
     <>
-      <p className={styles.title} >選んだメニュー</p>
-      <dl className={styles.selectedMenu} >
+      <p className={styles.title}>選んだメニュー</p>
+      <dl className={styles.selectedMenu}>
         <dd className={styles.selectedMenuTitle}>前菜</dd>
         <dt>{menuTexts.appetizer}</dt>
         <dd className={styles.selectedMenuTitle}>スープ</dd>
@@ -15,5 +15,5 @@ export const SelectedMenu = ({ menuTexts }) => {
         <dt>{menuTexts.dessert}</dt>
       </dl>
     </>
-  )
-}
+  );
+};

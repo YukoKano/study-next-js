@@ -6,7 +6,7 @@ const Appraisal = () => {
       <h2>メニュー選択</h2>
       <AppraisalEntryForm />
     </>
-  )
-}
+  );
+};
 
 export default Appraisal;
