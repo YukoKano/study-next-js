@@ -14,6 +14,7 @@ export const ConfirmButton = ({ personalInfo, setIsAllOK }) => {
   };
 
   return (
+    // TODO: ここをnextButtonと揃える　ロジックは上に書く、渡す
     <button className={styles.nextButton} onClick={handleClick}>
       確認画面へ進む
     </button>

@@ -73,42 +73,53 @@ export const AppraisalEntryForm = () => {
       },
     }));
   };
+  
+  // menuも入ってないし、全部埋まってない時を、変数としてもつ
+  const isConfirmButton = !isMenuOK || !isAllOK;
 
   return (
+    // 呼び出すだけになる
     <>
       <form>
+        // menuのフォーム
         <MenuForm
           menuState={menuState}
           toggleModal={toggleModal}
           updateMenu={updateMenu}
         />
-        {isMenuOK ? (
-          <>
-            <PersonalInformationForm
-              personalInfo={personalInfo}
-              setPersonalInfo={setPersonalInfo}
-              setIsAllOK={setIsAllOK}
-            />
-          </>
-        ) : (
-          <NextButton menuTexts={menuState.texts} setIsMenuOK={setIsMenuOK} />
-        )}
-        {isAllOK && (
-          <SelectedMenu
-            menuTexts={Object.assign(menuState.texts, personalInfo)}
-          />
-        )}
-        {!isMenuOK ||
-          (!isAllOK && (
-            <ConfirmButton
-              personalInfo={personalInfo}
-              setIsAllOK={setIsAllOK}
-            />
-          ))}
+
+        // メニューが全部埋まっていて、ボタンを押した後
+        // 個人情報のフォーム
+        <PersonalInformationForm
+          personalInfo={personalInfo}
+          setPersonalInfo={setPersonalInfo}
+          setIsAllOK={setIsAllOK}
+          isMenuOK={isMenuOK} // なるべく出しわけは子でやる　親は呼ぶだけで具材は親が渡す　＝　出しわけするためのやつを子に渡す
+        />
+
+        // menuが埋まってなかったら
+        // 子にboolをわたしてOk
+        // TODO:confirmと一緒になったらいいな〜 汎用的にするなら命名を変える
+        <NextButton menuTexts={menuState.texts} setIsMenuOK={setIsMenuOK} isShow={isMenuOK}/>
+
+        // フォーム全部入ったら
+        // 選んだやつ
+        <SelectedMenu
+          menuTexts={Object.assign(menuState.texts, personalInfo)}
+          isAllOK={isAllOK}
+        />
+        <ConfirmButton
+          personalInfo={personalInfo}
+          setIsAllOK={setIsAllOK}
+          isConfirm={isConfirm}
+        />
       </form>
-      {isDisplayBackground && (
+
+      // モーダル出る時の背景のdiv
+      // TODO: modalに持たせたい
+      {/* {isDisplayBackground && (
         <div className={styles.background} onClick={hideBackground}></div>
-      )}
+      )} */}
     </>
   );
 };

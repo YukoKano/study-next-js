@@ -16,6 +16,14 @@ export const MenuForm = ({ toggleModal, updateMenu, menuState }) => {
           updateMenu={updateMenu}
         />
       ))}
+      // TODO: menuでしか使わないからここでmodalを呼び出す
+      {/* <Modal
+        isModal={isModal}
+        handleClick={(e) => updateMenu(category, e)}
+        toggleModal={() => toggleModal(category)}
+        category={category}
+      /> */}
+      // 中身は別データから持ってくる、処理が綺麗そう　categoryで持ってきて、filterを使うとか
     </>
   );
 };

@@ -10,17 +10,19 @@ export const SelectBox = ({
 }) => {
   return (
     <>
+      // セレクトボックスとがっちゃんこして良さそう
       <Label
         text={text}
         toggleModal={() => toggleModal(category)}
         category={category}
       />
-      <Modal
+      // コレはなくす
+      {/* <Modal
         isModal={isModal}
         handleClick={(e) => updateMenu(category, e)}
         toggleModal={() => toggleModal(category)}
         category={category}
-      />
+      /> */}
     </>
   );
 };
