@@ -7,8 +7,8 @@ export const PersonalInformationForm = ({
   setIsAllOK,
   isMenuOK,
 }) => {
-  if(!isMenuOK) return null; 
-  
+  if (!isMenuOK) return null;
+
   const handleOnChange = (e) => {
     setPersonalInfo((prevInfo) => {
       return { ...prevInfo, [e.target.name]: e.target.value };
@@ -24,7 +24,8 @@ export const PersonalInformationForm = ({
   return (
     <>
       <label className={styles.label} htmlFor="name">
-        名前 <span className={styles.requiredLabel}>※必須</span> // 必須はコンポーネントにしてもいい
+        名前 <span className={styles.requiredLabel}>※必須</span>
+        {/* // 必須はコンポーネントにしてもいい */}
       </label>
       <input // ここもコンポーネントにしてもいい　最小単位でコンポーネント作る
         className={styles.textbox}
@@ -37,7 +38,7 @@ export const PersonalInformationForm = ({
       <label className={styles.label} htmlFor="postcode">
         郵便番号 <span className={styles.requiredLabel}>※必須</span>
       </label>
-      <input　//コンポーネントにして値を...propsで渡す方がいい
+      <input //コンポーネントにして値を...propsで渡す方がいい
         className={styles.textbox}
         type="number"
         id="postcode"

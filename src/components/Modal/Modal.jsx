@@ -1,18 +1,39 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
-import { Lists } from "../Lists/Lists";
 import { findCategory } from "@/utils/findCourses";
 
-export const Modal = ({ isModal, handleClick, toggleModal, category, hideBackground }) => {
-  if(!isModal) return null; // 可読性も上がるし、余計な計算しなくて済む　早期リターン
+export const Modal = ({ setMenuState, isModal, category, toggleModal }) => {
+  if (!isModal) return null; // 早期リターン
+
+  const updateMenu = (category, e) => {
+    e.preventDefault();
+
+    const text = e.currentTarget.innerText;
+    setMenuState((prevMenuState) => ({
+      ...prevMenuState,
+      [category]: text,
+    }));
+  };
 
   const menu = findCategory(category);
+  if (!menu || !menu.items) return null;
 
   return (
-    <div className={styles.background} onClick={hideBackground}> // cssで背景つける
+    <div className={styles.background} onClick={() => toggleModal()}>
       <div className={`${styles.modal}`}>
         <p>{menu.label}を選んでね</p>
-        <Lists handleClick={handleClick} category={category} />
-        <button onClick={() => toggleModal(category)}>戻る</button>
+        <ul className={styles.ul}>
+          {menu.items.map((item) => (
+            <li key={item.value} className={styles.list}>
+              <button
+                onClick={(e) => updateMenu(category, e)}
+                value={item.value}
+              >
+                {item.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button onClick={() => toggleModal()}>戻る</button>
       </div>
     </div>
   );
