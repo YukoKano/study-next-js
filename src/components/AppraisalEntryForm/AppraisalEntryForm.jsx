@@ -7,12 +7,6 @@ import { MenuForm } from "../MenuForm/MenuForm";
 import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
 
 const initialMenuState = {
-  modals: {
-    appetizer: false,
-    soup: false,
-    meatDish: false,
-    dessert: false,
-  },
   texts: {
     appetizer: "選択してください",
     soup: "選択してください",
@@ -30,62 +24,34 @@ const initialPersonalInfoState = {
 };
 
 export const AppraisalEntryForm = () => {
+  const [isModal, setIsModal] = useState(false);
+
   const [menuState, setMenuState] = useState(initialMenuState);
-  const [isDisplayBackground, setDisplayBackground] = useState(false);
 
   const [isMenuOK, setIsMenuOK] = useState(false);
   const [isAllOK, setIsAllOK] = useState(false);
 
   const [personalInfo, setPersonalInfo] = useState(initialPersonalInfoState);
 
-  const toggleModal = (value) => {
+  const toggleModal = () => {
     //  開く閉じる
-    setDisplayBackground(!isDisplayBackground);
-    setMenuState((prevMenuState) => ({
-      ...prevMenuState,
-      modals: {
-        ...prevMenuState.modals,
-        [value]: !prevMenuState.modals[value],
-      },
-    }));
+    setIsModal(!isModal);
   };
 
   const hideBackground = () => {
-    // 初期化する
-    setDisplayBackground(false);
-    setMenuState((prevMenuState) => ({
-      ...prevMenuState,
-      modals: initialMenuState.modals,
-    }));
+    setIsModal(false);
   };
 
-  const updateMenu = (category, e) => {
-    // 選んだメニューを更新する
-    const text = e.currentTarget.innerText;
-
-    e.preventDefault();
-    setDisplayBackground(!isDisplayBackground);
-    setMenuState((prevMenuState) => ({
-      texts: { ...prevMenuState.texts, [category]: text },
-      modals: {
-        ...prevMenuState.modals,
-        [category]: !prevMenuState.modals[category],
-      },
-    }));
-  };
-  
   // menuも入ってないし、全部埋まってない時を、変数としてもつ
   const isConfirmButton = !isMenuOK || !isAllOK;
 
   return (
-    // 呼び出すだけになる
-    <>
+    <>    
       <form>
-        // menuのフォーム
         <MenuForm
           menuState={menuState}
           toggleModal={toggleModal}
-          updateMenu={updateMenu}
+          hideBackground={hideBackground}
         />
 
         // メニューが全部埋まっていて、ボタンを押した後
@@ -114,12 +80,6 @@ export const AppraisalEntryForm = () => {
           isConfirm={isConfirm}
         />
       </form>
-
-      // モーダル出る時の背景のdiv
-      // TODO: modalに持たせたい
-      {/* {isDisplayBackground && (
-        <div className={styles.background} onClick={hideBackground}></div>
-      )} */}
     </>
   );
 };

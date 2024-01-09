@@ -6,7 +6,6 @@ export const SelectBox = ({
   isModal,
   category,
   toggleModal,
-  updateMenu,
 }) => {
   return (
     <>
