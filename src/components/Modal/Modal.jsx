@@ -1,16 +1,19 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 import { findCategory } from "@/utils/findCourses";
 
-export const Modal = ({ setMenuState, isModal, category, toggleModal }) => {
+export const Modal = ({ setInputState, isModal, category, toggleModal }) => {
   if (!isModal) return null; // 早期リターン
 
   const updateMenu = (category, e) => {
     e.preventDefault();
 
     const text = e.currentTarget.innerText;
-    setMenuState((prevMenuState) => ({
+    setInputState((prevMenuState) => ({
       ...prevMenuState,
-      [category]: text,
+      menu: {
+        ...prevMenuState.menu,
+        [category]: text,
+      },
     }));
   };
 

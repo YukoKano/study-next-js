@@ -8,7 +8,7 @@ export const SelectBox = ({
   setSelectedCategory,
 }) => {
   const menu = findCategory(category);
-  console.log(menu);
+  // console.log(menu);
 
   const handleModal = (e) => {
     e.preventDefault();

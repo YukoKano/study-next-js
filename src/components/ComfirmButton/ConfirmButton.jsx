@@ -1,22 +1,29 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 
-export const ConfirmButton = ({ personalInfo, setIsAllOK }) => {
-  const notEntered = Object.values(personalInfo).some((val) => val === "");
+export const Button = ({ inputState, setIsMenuOK, setIsAllOK }) => {
+  const notMenuEntered = Object.values(inputState.menu).some(
+    (val) => val === "選択してください"
+  );
+
+  const notPersonalInfoEntered = Object.values(inputState.personalInfo).some(
+    (val) => val === ""
+  );
+
+  const isComfirmOK = !notMenuEntered && !notPersonalInfoEntered;
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (notEntered) {
-      console.log("NG");
-    } else {
-      console.log("OK");
+    if (!notMenuEntered) {
+      setIsMenuOK(true);
+    }
+    if (isComfirmOK) {
       setIsAllOK(true);
     }
   };
 
   return (
-    // TODO: ここをnextButtonと揃える　ロジックは上に書く、渡す
     <button className={styles.nextButton} onClick={handleClick}>
-      確認画面へ進む
+      次へ進む
     </button>
   );
 };

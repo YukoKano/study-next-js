@@ -1,23 +1,30 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
 
-export const PersonalInformationForm = ({
-  personalInfo,
-  setPersonalInfo,
-  setIsAllOK,
-  isMenuOK,
-}) => {
+export const PersonalInformationForm = ({ setInputState, isMenuOK }) => {
   if (!isMenuOK) return null;
 
   const handleOnChange = (e) => {
-    setPersonalInfo((prevInfo) => {
-      return { ...prevInfo, [e.target.name]: e.target.value };
+    setInputState((prevInfo) => {
+      return {
+        ...prevInfo,
+        personalInfo: {
+          ...prevInfo.personalInfo,
+          [e.target.name]: e.target.value,
+        },
+      };
     });
   };
 
   const handleRadioChange = (e) => {
-    setPersonalInfo((prevInfo) => {
-      return { ...prevInfo, [e.target.name]: e.target.id === "yes" };
+    setInputState((prevInfo) => {
+      return {
+        ...prevInfo,
+        personalInfo: {
+          ...prevInfo.personalInfo,
+          [e.target.name]: e.target.id === "yes",
+        },
+      };
     });
   };
 
