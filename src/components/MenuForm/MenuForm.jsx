@@ -11,9 +11,8 @@ export const MenuForm = ({
   toggleModal,
   inputState,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(""); // ここに書くべきか
 
-  console.log(inputState);
   return (
     <>
       {courseCategories.map((categoryName) => (

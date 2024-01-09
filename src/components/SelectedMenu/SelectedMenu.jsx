@@ -1,7 +1,7 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 
-export const SelectedMenu = ({ inputState, isAllOK }) => {
-  if (!isAllOK) return null;
+export const SelectedMenu = ({ inputState, isOK }) => {
+  if (!isOK.menu || !isOK.personalInfo) return null;
 
   return (
     <>

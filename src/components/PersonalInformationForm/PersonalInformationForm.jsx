@@ -1,8 +1,8 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
-import { ConfirmButton } from "../ComfirmButton/ConfirmButton";
+import { ConfirmButton } from "../Button/Button";
 
-export const PersonalInformationForm = ({ setInputState, isMenuOK }) => {
-  if (!isMenuOK) return null;
+export const PersonalInformationForm = ({ setInputState, isOK }) => {
+  if (!isOK["menu"]) return null;
 
   const handleOnChange = (e) => {
     setInputState((prevInfo) => {

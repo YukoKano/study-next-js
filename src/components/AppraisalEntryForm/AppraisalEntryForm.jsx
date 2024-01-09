@@ -1,10 +1,8 @@
-import styles from "@/styles/AppraisalEntryForm.module.css";
 import { useState } from "react";
 import { SelectedMenu } from "../SelectedMenu/SelectedMenu";
-import { NextButton } from "../NextButton/NextButton";
 import { PersonalInformationForm } from "../PersonalInformationForm/PersonalInformationForm";
 import { MenuForm } from "../MenuForm/MenuForm";
-import { Button } from "../ComfirmButton/ConfirmButton";
+import { Button } from "../Button/Button";
 
 const initialState = {
   menu: {
@@ -23,37 +21,25 @@ const initialState = {
 };
 
 export const AppraisalEntryForm = () => {
-  const [isModal, setIsModal] = useState(false);
-  const toggleModal = () => setIsModal(!isModal);
-
   const [inputState, setInputState] = useState(initialState);
-
-  const [isMenuOK, setIsMenuOK] = useState(false);
-  const [isAllOK, setIsAllOK] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isOK, setIsOK] = useState({ menu: false, personalInfo: false });
 
   return (
-    <form>
-      {/* // なるべく出しわけは子でやる　親は呼ぶだけで具材は親が渡す　＝　出しわけするためのやつを子に渡す */}
-      <MenuForm
-        inputState={inputState}
-        setInputState={setInputState}
-        isModal={isModal}
-        toggleModal={toggleModal}
-      />
+    <>
+      <form>
+        {/* // なるべく出しわけは子でやる　親は呼ぶだけで具材は親が渡す　＝　出しわけするためのやつを子に渡す */}
+        <MenuForm
+          inputState={inputState}
+          setInputState={setInputState}
+          isModal={isModal}
+          toggleModal={() => setIsModal(!isModal)}
+        />
+        <PersonalInformationForm setInputState={setInputState} isOK={isOK} />
+        <Button inputState={inputState} setIsOK={setIsOK} />
+      </form>
 
-      <PersonalInformationForm
-        setInputState={setInputState}
-        isMenuOK={isMenuOK}
-      />
-
-      <Button
-        inputState={inputState}
-        setIsMenuOK={setIsMenuOK}
-        setIsAllOK={setIsAllOK}
-      />
-
-      {/* // フォーム全部入ったら // 選んだやつ */}
-      <SelectedMenu inputState={inputState} isAllOK={isAllOK} />
-    </form>
+      <SelectedMenu inputState={inputState} isOK={isOK} />
+    </>
   );
 };

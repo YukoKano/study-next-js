@@ -1,6 +1,6 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
 
-export const Button = ({ inputState, setIsMenuOK, setIsAllOK }) => {
+export const Button = ({ inputState, setIsOK }) => {
   const notMenuEntered = Object.values(inputState.menu).some(
     (val) => val === "選択してください"
   );
@@ -9,15 +9,13 @@ export const Button = ({ inputState, setIsMenuOK, setIsAllOK }) => {
     (val) => val === ""
   );
 
-  const isComfirmOK = !notMenuEntered && !notPersonalInfoEntered;
-
   const handleClick = (e) => {
     e.preventDefault();
     if (!notMenuEntered) {
-      setIsMenuOK(true);
+      setIsOK((prevState) => ({ ...prevState, ["menu"]: true }));
     }
-    if (isComfirmOK) {
-      setIsAllOK(true);
+    if (!notMenuEntered && !notPersonalInfoEntered) {
+      setIsOK((prevState) => ({ ...prevState, ["personalInfo"]: true }));
     }
   };
 
