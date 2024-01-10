@@ -2,7 +2,6 @@ import styles from "@/styles/AppraisalEntryForm.module.css";
 
 export const RadioButton = (props) => {
   const handleRadioChange = (e) => {
-    console.log(e.target.id);
     props.setInputState((prevInfo) => {
       return {
         ...prevInfo,
