@@ -72,3 +72,5 @@ export const COURSES = [
     ],
   },
 ];
+
+export const COURSE_NAMES = COURSES.map((val) => val.course);

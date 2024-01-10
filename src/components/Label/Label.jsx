@@ -1,8 +1,8 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
-import { findCategory } from "@/utils/findCourses";
+import { findCategoryItems } from "@/utils/findCourses";
 
 export const Label = ({ text, toggleModal, category }) => {
-  const menu = findCategory(category);
+  const menu = findCategoryItems(category);
 
   const handleModal = (e) => {
     e.preventDefault();

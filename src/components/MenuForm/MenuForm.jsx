@@ -3,32 +3,27 @@ import { COURSES } from "@/constants/COURSES";
 import { Modal } from "../Modal/Modal";
 import { SelectBox } from "../SelectBox/SelectBox";
 
-const courseCategories = COURSES.map((val) => val.course);
-
-export const MenuForm = ({
-  setInputState,
-  isModal,
-  toggleModal,
-  inputState,
-}) => {
+export const MenuForm = ({ inputState, setInputState }) => {
+  const [isDisplayModal, setIsDisplayModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(""); // ここに書くべきか
 
   return (
     <>
-      {courseCategories.map((categoryName) => (
+      {COURSES.map((course) => (
         <SelectBox
-          key={categoryName}
-          category={categoryName}
-          text={inputState.menu[categoryName]}
-          toggleModal={toggleModal}
+          key={course.label}
+          course={course}
+          inputState={inputState}
+          isDisplayModal={isDisplayModal}
+          setIsDisplayModal={setIsDisplayModal}
           setSelectedCategory={setSelectedCategory}
         />
       ))}
 
       <Modal
-        isModal={isModal}
-        category={selectedCategory}
-        toggleModal={toggleModal}
+        selectedCategory={selectedCategory}
+        isDisplayModal={isDisplayModal}
+        setIsDisplayModal={setIsDisplayModal}
         setInputState={setInputState}
       />
 

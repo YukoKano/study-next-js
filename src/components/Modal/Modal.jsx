@@ -1,10 +1,18 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
-import { findCategory } from "@/utils/findCourses";
+import { findCategoryItems } from "@/utils/findCourses";
 
-export const Modal = ({ setInputState, isModal, category, toggleModal }) => {
-  if (!isModal) return null; // 早期リターン
+export const Modal = ({
+  selectedCategory,
+  isDisplayModal,
+  setIsDisplayModal,
+  setInputState,
+}) => {
+  if (!isDisplayModal) return null; // 早期リターン
 
-  const updateMenu = (category, e) => {
+  const menu = findCategoryItems(selectedCategory);
+  if (!menu || !menu.items) return null;
+
+  const updateMenu = (selectedCategory, e) => {
     e.preventDefault();
 
     const text = e.currentTarget.innerText;
@@ -12,23 +20,23 @@ export const Modal = ({ setInputState, isModal, category, toggleModal }) => {
       ...prevMenuState,
       menu: {
         ...prevMenuState.menu,
-        [category]: text,
+        [selectedCategory]: text,
       },
     }));
   };
 
-  const menu = findCategory(category);
-  if (!menu || !menu.items) return null;
-
   return (
-    <div className={styles.background} onClick={() => toggleModal()}>
+    <div
+      className={styles.background}
+      onClick={() => setIsDisplayModal(!isDisplayModal)}
+    >
       <div className={`${styles.modal}`}>
         <p>{menu.label}を選んでね</p>
         <ul className={styles.ul}>
           {menu.items.map((item) => (
             <li key={item.value} className={styles.list}>
               <button
-                onClick={(e) => updateMenu(category, e)}
+                onClick={(e) => updateMenu(selectedCategory, e)}
                 value={item.value}
               >
                 {item.name}
@@ -36,7 +44,7 @@ export const Modal = ({ setInputState, isModal, category, toggleModal }) => {
             </li>
           ))}
         </ul>
-        <button onClick={() => toggleModal()}>戻る</button>
+        <button onClick={() => setIsDisplayModal(!isDisplayModal)}>戻る</button>
       </div>
     </div>
   );

@@ -1,3 +1,3 @@
 import { COURSES } from "@/constants/COURSES";
-export const findCategory = (category) =>
+export const findCategoryItems = (category) =>
   COURSES.find((val) => val.course === category);

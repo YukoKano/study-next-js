@@ -1,35 +1,35 @@
 import styles from "@/styles/AppraisalEntryForm.module.css";
-import { findCategory } from "@/utils/findCourses";
+import { RequiredLabel } from "../RequierdLabel/RequiredLabel";
 
 export const SelectBox = ({
-  text,
-  toggleModal,
-  category,
+  course,
+  inputState,
+  isDisplayModal,
+  setIsDisplayModal,
   setSelectedCategory,
 }) => {
-  const menu = findCategory(category);
-  // console.log(menu);
-
   const handleModal = (e) => {
     e.preventDefault();
-    setSelectedCategory(category);
-    toggleModal();
+    setSelectedCategory(course.course);
+    setIsDisplayModal(!isDisplayModal);
   };
+
+  const text = inputState.menu[course.course];
 
   return (
     <>
       <label className={styles.label}>
-        {menu.label}
-        <span className={styles.requiredLabel}>※必須</span>
+        {course.label}
+        <RequiredLabel />
       </label>
       <button className={styles.selectbox} onClick={(e) => handleModal(e)}>
         {text}
       </button>
 
       {/* TODO:ボタン押したら出るようにする */}
-      {text === "選択してください" && (
+      {/* {text === "選択してください" && (
         <p className={styles.requiredText}>{menu.label}を入力してください</p>
-      )}
+      )} */}
     </>
   );
 };
