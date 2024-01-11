@@ -5,7 +5,7 @@ import { SelectBox } from "../SelectBox/SelectBox";
 
 export const MenuForm = ({ inputState, setInputState }) => {
   const [isDisplayModal, setIsDisplayModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(""); // ここに書くべきか
+  const [selectedCategory, setSelectedCategory] = useState(""); // ここに書くでOK
 
   return (
     <>

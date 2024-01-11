@@ -20,7 +20,8 @@ export const SelectBox = ({
     <>
       <label className={styles.label}>
         {course.label}
-        <RequiredLabel />
+        <RequiredLabel /> 
+        {/* TODO:選択してください、だったら必須、そうでなければOK */}
       </label>
       <button className={styles.selectbox} onClick={(e) => handleModal(e)}>
         {text}
